@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storyboard AI Tool - AI-Powered Visual Storytelling</title>
+    <meta name="description" content="Transform your scripts into stunning visual storyboards with AI. Generate professional storyboards in minutes, not hours.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-surface: #12121a;
+            --bg-elevated: #1a1a25;
+            --border: #2a2a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --gradient-start: #3b82f6;
+            --gradient-end: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Effects */
+        .bg-gradient-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-gradient-blur::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-gradient-blur::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-gradient-text {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Demo Preview */
+        .demo-section {
+            position: relative;
+            padding: 4rem 2rem;
+            z-index: 1;
+        }
+
+        .demo-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .demo-dot.red { background: #ff5f56; }
+        .demo-dot.yellow { background: #ffbd2e; }
+        .demo-dot.green { background: #27c93f; }
+
+        .demo-content {
+            padding: 2rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .demo-frame {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .demo-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .demo-frame-image {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--bg-surface), var(--bg-elevated));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-frame-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .demo-frame-image svg {
+            width: 48px;
+            height: 48px;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .demo-frame-content {
+            padding: 1rem;
+        }
+
+        .demo-frame-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-frame-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Features Section */
+        .features {
+            position: relative;
+            padding: 6rem 2rem;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--accent-blue);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Providers Section */
+        .providers {
+            position: relative;
+            padding: 6rem 2rem;
+            background: var(--bg-surface);
+            z-index: 1;
+        }
+
+        .providers-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .provider-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .provider-card:hover {
+            border-color: var(--accent-purple);
+            transform: scale(1.02);
+        }
+
+        .provider-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background: var(--bg-surface);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .provider-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .provider-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Workflow Section */
+        .workflow {
+            position: relative;
+            padding: 6rem 2rem;
+            z-index: 1;
+        }
+
+        .workflow-steps {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .workflow-step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            position: relative;
+            padding: 6rem 2rem;
+            background: var(--bg-surface);
+            z-index: 1;
+        }
+
+        .pricing-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-elevated);
+            border: 2px solid var(--accent-blue);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .pricing-price {
+            margin-bottom: 2rem;
+        }
+
+        .price-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-period {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+
+        .price-note {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--accent-green);
+            margin-top: 0.5rem;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-feature:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-feature svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-green);
+            flex-shrink: 0;
+        }
+
+        .pricing-feature span {
+            color: var(--text-secondary);
+        }
+
+        .pricing-cta {
+            width: 100%;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            position: relative;
+            padding: 6rem 2rem;
+            z-index: 1;
+        }
+
+        .testimonial-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+        }
+
+        .testimonial-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta {
+            position: relative;
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, var(--bg-surface), var(--bg-dark));
+            z-index: 1;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin: 0 auto;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient-blur"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                Storyboard AI Tool
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#workflow">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary">Get License</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                AI-Powered Storyboarding
+            </div>
+            <h1>
+                Transform Your Scripts Into<br>
+                <span class="hero-gradient-text">Stunning Visual Storyboards</span>
+            </h1>
+            <p class="hero-subtitle">
+                Generate professional storyboards in minutes, not hours. Connect to any AI image provider,
+                work online or offline, and bring your creative vision to life.
+            </p>
+            <div class="hero-cta">
+                <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Buy Lifetime License - $49
+                </a>
+                <a href="#features" class="btn btn-secondary btn-large">
+                    Learn More
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">10+</div>
+                    <div class="stat-label">AI Providers</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Offline Capable</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Device Activations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">$0</div>
+                    <div class="stat-label">Monthly Fees</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Preview -->
+    <section class="demo-section">
+        <div class="demo-container">
+            <div class="demo-header">
+                <div class="demo-dot red"></div>
+                <div class="demo-dot yellow"></div>
+                <div class="demo-dot green"></div>
+            </div>
+            <div class="demo-content">
+                <div class="demo-grid">
+                    <div class="demo-frame">
+                        <div class="demo-frame-image">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="demo-frame-content">
+                            <div class="demo-frame-title">Frame 1: Opening Shot</div>
+                            <div class="demo-frame-desc">Wide establishing shot of the cityscape at dawn.</div>
+                        </div>
+                    </div>
+                    <div class="demo-frame">
+                        <div class="demo-frame-image">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="demo-frame-content">
+                            <div class="demo-frame-title">Frame 2: Character Intro</div>
+                            <div class="demo-frame-desc">Medium shot of protagonist walking through the streets.</div>
+                        </div>
+                    </div>
+                    <div class="demo-frame">
+                        <div class="demo-frame-image">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="demo-frame-content">
+                            <div class="demo-frame-title">Frame 3: Close-up</div>
+                            <div class="demo-frame-desc">Close-up on the mysterious object in their hand.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <span class="section-label">Features</span>
+            <h2>Everything You Need to Create Professional Storyboards</h2>
+            <p class="section-subtitle">Powerful AI tools designed for filmmakers, animators, and creative professionals.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3>AI-Powered Generation</h3>
+                <p>Enter your script or story description and watch as AI transforms your words into stunning visual frames automatically.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3>Multiple AI Providers</h3>
+                <p>Connect to 10+ image generation providers including OpenAI DALL-E, Stability AI, Replicate, FAL AI, and local Stable Diffusion.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h3>Work Offline</h3>
+                <p>Run Stable Diffusion locally with AUTOMATIC1111 or ComfyUI. No internet required, complete privacy for your projects.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3>Video Generation</h3>
+                <p>Transform your storyboard frames into short videos with Runway Gen-3, Luma Dream Machine, or local ComfyUI AnimateDiff.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </div>
+                <h3>Regenerate & Iterate</h3>
+                <p>Not happy with a frame? Regenerate with one click, upscale to hi-res, or browse through your generation history.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h3>Export Options</h3>
+                <p>Export your storyboard as a professional PDF document or download all frames as high-quality PNG, JPG, or WebP images.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers Section -->
+    <section class="providers">
+        <div class="section-header">
+            <span class="section-label">Integrations</span>
+            <h2>Connect to Your Favorite AI Providers</h2>
+            <p class="section-subtitle">Use your own API keys and pay only for what you generate. No middleman fees.</p>
+        </div>
+        <div class="providers-grid">
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729z"/>
+                    </svg>
+                </div>
+                <h4>OpenAI DALL-E</h4>
+                <p>GPT-Image-1 & DALL-E 3</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                </div>
+                <h4>Stability AI</h4>
+                <p>SDXL & SD3</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                    </svg>
+                </div>
+                <h4>Replicate</h4>
+                <p>Flux & Custom Models</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h4>FAL AI</h4>
+                <p>Fast Inference</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h4>AUTOMATIC1111</h4>
+                <p>Local SD WebUI</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                    </svg>
+                </div>
+                <h4>ComfyUI</h4>
+                <p>Advanced Workflows</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h4>Runway</h4>
+                <p>Gen-3 Video</p>
+            </div>
+            <div class="provider-card">
+                <div class="provider-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h4>Luma</h4>
+                <p>Dream Machine</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="workflow">
+        <div class="section-header">
+            <span class="section-label">How It Works</span>
+            <h2>From Script to Storyboard in 3 Simple Steps</h2>
+            <p class="section-subtitle">Our streamlined workflow makes professional storyboarding accessible to everyone.</p>
+        </div>
+        <div class="workflow-steps">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Write Your Story</h3>
+                    <p>Enter your script, scene descriptions, or story outline. Describe the visual elements, characters, and atmosphere you want to capture. The AI understands context and creative direction.</p>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Generate Frames</h3>
+                    <p>Click generate and watch as AI creates stunning visual frames for each scene. Review the generated images, regenerate any frames you'd like to refine, and iterate until perfect.</p>
+                </div>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Export & Share</h3>
+                    <p>Export your completed storyboard as a professional PDF for client presentations, or download all frames as high-quality images. Optionally generate videos from your favorite frames.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="section-header">
+            <span class="section-label">Pricing</span>
+            <h2>Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">One price. Lifetime access. No subscriptions or hidden fees.</p>
+        </div>
+        <div class="pricing-card">
+            <div class="pricing-badge">Lifetime License</div>
+            <h3 class="pricing-title">Storyboard AI Tool</h3>
+            <p class="pricing-subtitle">Everything you need to create professional storyboards</p>
+            <div class="pricing-price">
+                <span class="price-amount">$49</span>
+                <span class="price-period">one-time</span>
+                <span class="price-note">No monthly or yearly fees. Ever.</span>
+            </div>
+            <div class="pricing-features">
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Unlimited storyboards</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>All AI providers (online & offline)</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>2 device activations</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Free lifetime updates</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Local Stable Diffusion support</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Video generation from frames</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>PDF & image export</span>
+                </div>
+                <div class="pricing-feature">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Desktop app (Windows, Mac, Linux)</span>
+                </div>
+            </div>
+            <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large pricing-cta">
+                Get Your License Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial">
+        <div class="testimonial-content">
+            <p class="testimonial-quote">
+                "Storyboard AI Tool has completely transformed my pre-production workflow.
+                What used to take days now takes hours. The ability to use my own local
+                Stable Diffusion setup means I have complete control over my creative vision."
+            </p>
+            <div class="testimonial-author">
+                <div class="testimonial-avatar">JM</div>
+                <div class="testimonial-info">
+                    <h4>James Mitchell</h4>
+                    <p>Independent Filmmaker</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Transform Your Storytelling?</h2>
+            <p>Join creators who are using AI to bring their visual stories to life faster than ever before.</p>
+            <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Get Storyboard AI Tool - $49
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                Storyboard AI Tool
+            </a>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#workflow">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="mailto:support@storyboardaitool.com">Support</a>
+            </div>
+            <p class="footer-copyright">&copy; 2025 Storyboard AI Tool. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
