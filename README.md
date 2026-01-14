@@ -1,16 +1,16 @@
 # Storyboard AI Tool - Marketing Website
 
-A stunning one-page marketing website for Storyboard AI Tool.
+A stunning one-page marketing website for Storyboard AI Tool built with Next.js.
 
 ## Overview
 
-This is a static HTML landing page designed to showcase and sell Storyboard AI Tool - an AI-powered storyboarding application.
+This is a Next.js landing page designed to showcase and sell Storyboard AI Tool - an AI-powered storyboarding application. It's optimized for hosting platforms like Hostinger, Netlify, and Vercel.
 
 ## Features
 
 - **Modern Dark Theme**: Sleek, professional design with gradient accents
 - **Fully Responsive**: Works on desktop, tablet, and mobile devices
-- **Pure HTML/CSS**: No dependencies, fast loading
+- **Next.js Static Export**: Fast, SEO-friendly static site
 - **Animated Background**: Subtle floating gradient effects
 - **Clear CTAs**: Multiple call-to-action buttons linked to LemonSqueezy checkout
 
@@ -26,50 +26,76 @@ This is a static HTML landing page designed to showcase and sell Storyboard AI T
 8. **Final CTA** - Closing call to action
 9. **Footer** - Navigation and copyright
 
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
 ## Deployment
 
-This is a static website and can be deployed to any hosting platform:
-
-### GitHub Pages
-1. Push to a GitHub repository
-2. Go to Settings > Pages
-3. Select branch and root folder
-4. Your site will be live at `https://username.github.io/repo-name`
+### Hostinger
+1. Connect your GitHub repository to Hostinger
+2. Repository: `https://github.com/crispygoat/Storyboard-ai-marketing`
+3. Branch: `main`
+4. Build command: `npm run build`
+5. Output directory: `out`
+6. Node version: 18.x or higher
 
 ### Netlify
 1. Connect your GitHub repository
-2. Deploy automatically on push
+2. Build command: `npm run build`
+3. Publish directory: `out`
+4. Deploy automatically on push
 
 ### Vercel
 1. Import the repository
-2. Deploy with zero configuration
+2. Framework preset: Next.js
+3. Deploy with zero configuration
 
-### Custom Domain
-Add a `CNAME` file with your domain name for custom domain setup.
+### GitHub Pages
+1. Push to GitHub
+2. Go to Settings > Pages
+3. Deploy from GitHub Actions or select branch
+4. Site will be at `https://username.github.io/repo-name`
 
 ## Customization
 
 ### Update Checkout URL
-Find and replace the LemonSqueezy checkout URL throughout the file:
+Find and replace the LemonSqueezy checkout URL in `app/page.tsx`:
 ```
 https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f
 ```
 
 ### Update Pricing
-Search for `$49` to update the price in multiple locations.
+Search for `$49` in `app/page.tsx` to update the price in multiple locations.
 
 ### Update Contact Email
-Replace `support@storyboardaitool.com` with your actual support email.
+Replace `support@storyboardaitool.com` with your actual support email in `app/page.tsx`.
 
 ### Add Screenshots
-Replace the placeholder demo frames with actual product screenshots by adding `<img>` tags inside `.demo-frame-image` divs.
+Replace the placeholder demo frames with actual product screenshots.
+
+### Update Styles
+Modify `app/globals.css` to customize colors, fonts, and animations.
 
 ## Tech Stack
 
-- HTML5
-- CSS3 (with CSS Variables)
+- Next.js 16
+- React 19
+- TypeScript
 - Google Fonts (Inter)
-- No JavaScript required (pure CSS animations)
+- Static Export (no server required)
 
 ## Browser Support
 
