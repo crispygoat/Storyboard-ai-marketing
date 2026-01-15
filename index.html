@@ -1255,35 +1255,10 @@
         </div>
     </footer>
     <script>
-        async function startCheckout() {
+        function startCheckout() {
             event.preventDefault();
-
-            // Show loading state on clicked button
-            const btn = event.currentTarget;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span style="display: inline-flex; align-items: center; gap: 0.5rem;"><svg width="20" height="20" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="32" stroke-linecap="round"/></svg> Processing...</span>';
-            btn.style.pointerEvents = 'none';
-
-            try {
-                const response = await fetch('https://crispygoat-storyboard-ai-cortex.vercel.app/api/stripe/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                });
-
-                const data = await response.json();
-
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    throw new Error(data.error || 'Failed to start checkout');
-                }
-            } catch (error) {
-                console.error('Checkout error:', error);
-                alert('Unable to start checkout. Please try again or contact support.');
-                btn.innerHTML = originalText;
-                btn.style.pointerEvents = 'auto';
-            }
+            // Open Stripe Payment Link directly
+            window.open('https://buy.stripe.com/aFaaEX3Tf7Tbcgraa3fMA00', '_blank');
         }
     </script>
     <style>
