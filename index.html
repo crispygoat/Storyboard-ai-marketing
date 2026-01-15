@@ -841,7 +841,7 @@
                 <a href="#features">Features</a>
                 <a href="#workflow">How It Works</a>
                 <a href="#pricing">Pricing</a>
-                <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary">Get License</a>
+                <a href="#" onclick="startCheckout()" class="btn btn-primary">Get License</a>
             </div>
         </div>
     </nav>
@@ -862,7 +862,7 @@
                 work online or offline, and bring your creative vision to life.
             </p>
             <div class="hero-cta">
-                <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large">
+                <a href="#" onclick="startCheckout()" class="btn btn-primary btn-large">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
@@ -1188,7 +1188,7 @@
                     <span>Desktop app (Windows, Mac, Linux)</span>
                 </div>
             </div>
-            <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large pricing-cta">
+            <a href="#" onclick="startCheckout()" class="btn btn-primary btn-large pricing-cta">
                 Get Your License Now
             </a>
         </div>
@@ -1217,7 +1217,7 @@
         <div class="cta-content">
             <h2>Ready to Transform Your Storytelling?</h2>
             <p>Join creators who are using AI to bring their visual stories to life faster than ever before.</p>
-            <a href="https://storyboardaitool.lemonsqueezy.com/checkout/buy/dd882149-ab0b-4637-9a49-763d6f82ba2f" class="btn btn-primary btn-large">
+            <a href="#" onclick="startCheckout()" class="btn btn-primary btn-large">
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                 </svg>
@@ -1246,5 +1246,42 @@
             <p class="footer-copyright">&copy; 2025 Storyboard AI Tool. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        async function startCheckout() {
+            event.preventDefault();
+
+            // Show loading state on clicked button
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span style="display: inline-flex; align-items: center; gap: 0.5rem;"><svg width="20" height="20" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="32" stroke-linecap="round"/></svg> Processing...</span>';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                const response = await fetch('https://crispygoat-storyboard-ai-cortex.vercel.app/api/stripe/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error(data.error || 'Failed to start checkout');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Unable to start checkout. Please try again or contact support.');
+                btn.innerHTML = originalText;
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+    </script>
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </body>
 </html>
